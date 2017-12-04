@@ -1,0 +1,24 @@
+{
+  "name": "visualization_bigdata",
+  "version": "0.2.0",
+  "description": "Show status of bigdata platform on a big screen.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://10.11.206.6/CannedFish/visualization_bigdata"
+  },
+  "keywords": [
+    "express",
+    "bigdata",
+    "big-screen"
+  ],
+  "author": "CannedFish",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
