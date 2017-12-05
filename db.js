@@ -75,16 +75,14 @@ function doPost(reqPath, headers, reqData) {
 }
 
 exports.getAllData = (table, callback) => {
-  doGet('/data/'+table, appHeaders, (err, status, data) => {
-    if(err) {
-      return callback(err);
+  doGet('/data/'+table, appHeaders).then((ret) => {
+    if(ret.status != 200) {
+      return callback(`Bad return code: ${ret.status}`);
     }
 
-    if(status != 200) {
-      return callback(`Bad return code: ${status}`);
-    }
-
-    callback(null, data);
+    callback(null, ret.data);
+  }).catch((err) => {
+    callback(err)
   });
 }
 
