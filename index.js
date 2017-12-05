@@ -15,7 +15,8 @@ app.get('/', (req, res) => {
 
 app.use(`/api/${API_VERSION}`, api_v1);
 
-// app.use('/', express.static(__dirname+'/front'));
+app.use('/', express.static(path.join(__dirname, 'front')));
+
 app.listen(PORT, () => {
   console.log(`Server is running on 0.0.0.0:${PORT}`);
 });
