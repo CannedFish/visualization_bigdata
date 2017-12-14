@@ -44,10 +44,10 @@ CREATE TABLE IF NOT EXISTS vir_res_status (
 
 CREATE TABLE IF NOT EXISTS service_status (
   `timestamp` TIMESTAMP NOT NULL,
-  `cluster` TINYINT NOT NULL,
-  `service_name` VARCHAR(128),
+  `service_name` VARCHAR(128) NOT NULL,
+  `cluster` TINYINT,
   `health` TINYINT,
-  PRIMARY KEY (`timestamp`, `cluster`)
+  PRIMARY KEY (`timestamp`, `service_name`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS data_collector_volume (
@@ -70,12 +70,13 @@ CREATE TABLE IF NOT EXISTS data_statistics (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS user_statistics (
-  `timestamp` TIMESTAMP NOT NULL,
+  `job_id` VARCHAR(128),
   `user` VARCHAR(128),
   `vcore_used` INT,
   `memory_used` INT,
   `during_time` INT,
-  `jobs` INT,
-  PRIMARY KEY (`timestamp`)
+  `status` VARCHAR(32),
+  `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`job_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

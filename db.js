@@ -113,3 +113,11 @@ exports.registerApp = (key, callback) => {
   });
 }
 
+exports.privilege = (key, callback) => {
+  let headers = {
+    'Content-Type': 'application/json',
+    'Authorization': key
+  };
+  // TODO: privilege to all tables
+}
+
