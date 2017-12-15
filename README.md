@@ -14,11 +14,11 @@ npm install
 ## Initialize
 
 ```shell
-# Register this application
-node postInstall.js
-
 # Create tables in database
 mysql -h${db_host} -u{db_user} -p${db_password} sdata < scripts/create_tables.sql
+
+# Register this application and privilege to tables
+node postInstall.js
 ```
 
 ## Start Server

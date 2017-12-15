@@ -70,13 +70,13 @@ CREATE TABLE IF NOT EXISTS data_statistics (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS user_statistics (
+  `timestamp` TIMESTAMP NOT NULL,
   `job_id` VARCHAR(128),
   `user` VARCHAR(128),
   `vcore_used` INT,
   `memory_used` INT,
   `during_time` INT,
   `status` VARCHAR(32),
-  `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`job_id`)
+  PRIMARY KEY (`timestamp`, `job_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

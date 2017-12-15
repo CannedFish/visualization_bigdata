@@ -98,7 +98,7 @@ exports.registerApp = (key, callback) => {
   }).then((ret) => {
     console.log(`resolved data: ${ret.data.result}`)
     if(ret.data.result == 'ok') {
-      return doPost('/key'+config.db_server_app_name, headers)
+      return doPost('/key/'+config.db_server_app_name, headers)
     } else {
       throw new Error(ret.data.description)
     }
@@ -113,11 +113,41 @@ exports.registerApp = (key, callback) => {
   });
 }
 
+const tables = [
+  'phy_health',
+  'cluster_resource',
+  'cluster_status',
+  'vir_resource',
+  'vir_res_status',
+  'service_status',
+  'msg_queue_volume',
+  'data_statistics',
+  'user_statistics'
+]
 exports.privilege = (key, callback) => {
   let headers = {
     'Content-Type': 'application/json',
     'Authorization': key
   };
-  // TODO: privilege to all tables
+
+  doPost('/privilege/'+config.db_server_app_name, headers, {
+    priv: tables.map((t) => {
+      return {
+        table: t,
+        perms: [{
+          column: "_all_",
+          access: ["select", "update", "insert", "delete"]
+        }]
+      }
+    })
+  }).then((ret) => {
+    if(ret.data.result == 'ok') {
+      callback(null, tables)
+    } else {
+      throw new Error(ret.data.description)
+    }
+  }).catch((err) => {
+    callback(err)
+  });
 }
 
