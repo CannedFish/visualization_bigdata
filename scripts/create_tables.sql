@@ -6,12 +6,13 @@ CREATE TABLE IF NOT EXISTS phy_health (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS cluster_resource (
+  `timestamp` TIMESTAMP NOT NULL,
   `cluster` TINYINT NOT NULL,
   `nodes` SMALLINT,
   `cores` SMALLINT,
   `memory` INT,
   `disk` INT,
-  PRIMARY KEY (`cluster`)
+  PRIMARY KEY (`timestamp`, `cluster`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     
 CREATE TABLE IF NOT EXISTS cluster_status (
@@ -29,9 +30,11 @@ CREATE TABLE IF NOT EXISTS cluster_status (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS vir_resource (
+  `timestamp` TIMESTAMP NOT NULL,
   `vcores` INT,
   `vmems` INT,
-  `hdfs_capacity` INT
+  `hdfs_capacity` INT,
+  PRIMARY KEY (`timestamp`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS vir_res_status (
