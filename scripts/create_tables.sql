@@ -1,12 +1,12 @@
 CREATE TABLE IF NOT EXISTS phy_health (
-  `timestamp` TIMESTAMP NOT NULL,
+  `timestamp` VARCHAR(64) NOT NULL,
   `host_running` SMALLINT,
   `host_down` SMALLINT,
   PRIMARY KEY (`timestamp`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS cluster_resource (
-  `timestamp` TIMESTAMP NOT NULL,
+  `timestamp` VARCHAR(64) NOT NULL,
   `cluster` TINYINT NOT NULL,
   `nodes` SMALLINT,
   `cores` SMALLINT,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS cluster_resource (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     
 CREATE TABLE IF NOT EXISTS cluster_status (
-  `timestamp` TIMESTAMP NOT NULL,
+  `timestamp` VARCHAR(64) NOT NULL,
   `cluster` TINYINT NOT NULL,
   `cpu_percent` FLOAT,
   `mem_used` INT,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS cluster_status (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS vir_resource (
-  `timestamp` TIMESTAMP NOT NULL,
+  `timestamp` VARCHAR(64) NOT NULL,
   `vcores` INT,
   `vmems` INT,
   `hdfs_capacity` INT,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS vir_resource (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS vir_res_status (
-  `timestamp` TIMESTAMP NOT NULL,
+  `timestamp` VARCHAR(64) NOT NULL,
   `vcore_used` INT,
   `vmem_used` INT,
   `hdfs_used` INT,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS vir_res_status (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS service_status (
-  `timestamp` TIMESTAMP NOT NULL,
+  `timestamp` VARCHAR(64) NOT NULL,
   `service_name` VARCHAR(128) NOT NULL,
   `cluster` TINYINT,
   `health` TINYINT,
@@ -54,26 +54,26 @@ CREATE TABLE IF NOT EXISTS service_status (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS data_collector_volume (
-  `timestamp` TIMESTAMP NOT NULL,
+  `timestamp` VARCHAR(64) NOT NULL,
   `volume` FLOAT,
   PRIMARY KEY (`timestamp`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS msg_queue_volume (
-  `timestamp` TIMESTAMP NOT NULL,
+  `timestamp` VARCHAR(64) NOT NULL,
   `volume_in` FLOAT,
   `volume_out` FLOAT,
   PRIMARY KEY (`timestamp`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS data_statistics (
-  `timestamp` TIMESTAMP NOT NULL,
+  `timestamp` VARCHAR(64) NOT NULL,
   `records` INT,
   PRIMARY KEY (`timestamp`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS user_statistics (
-  `timestamp` TIMESTAMP NOT NULL,
+  `timestamp` VARCHAR(64) NOT NULL,
   `job_id` VARCHAR(128),
   `user` VARCHAR(128),
   `vcore_used` INT,
