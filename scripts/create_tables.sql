@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS cluster_resource (
   `cluster` TINYINT NOT NULL,
   `nodes` SMALLINT,
   `cores` SMALLINT,
-  `memory` INT,
-  `disk` INT,
+  `memory` BIGINT UNSIGNED,
+  `disk` BIGINT UNSIGNED,
   PRIMARY KEY (`timestamp`, `cluster`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     
@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS cluster_status (
   `timestamp` VARCHAR(64) NOT NULL,
   `cluster` TINYINT NOT NULL,
   `cpu_percent` FLOAT,
-  `mem_used` INT,
-  `disk_used` INT,
+  `mem_used` BIGINT UNSIGNED,
+  `disk_used` BIGINT UNSIGNED,
   `disk_input` FLOAT,
   `disk_output` FLOAT,
   `net_input` FLOAT,
@@ -32,16 +32,16 @@ CREATE TABLE IF NOT EXISTS cluster_status (
 CREATE TABLE IF NOT EXISTS vir_resource (
   `timestamp` VARCHAR(64) NOT NULL,
   `vcores` INT,
-  `vmems` INT,
-  `hdfs_capacity` INT,
+  `vmems` BIGINT UNSIGNED,
+  `hdfs_capacity` BIGINT UNSIGNED,
   PRIMARY KEY (`timestamp`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS vir_res_status (
   `timestamp` VARCHAR(64) NOT NULL,
   `vcore_used` INT,
-  `vmem_used` INT,
-  `hdfs_used` INT,
+  `vmem_used` BIGINT UNSIGNED,
+  `hdfs_used` BIGINT UNSIGNED,
   PRIMARY KEY (`timestamp`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS msg_queue_volume (
 
 CREATE TABLE IF NOT EXISTS data_statistics (
   `timestamp` VARCHAR(64) NOT NULL,
-  `records` INT,
+  `records` BIGINT UNSIGNED,
   PRIMARY KEY (`timestamp`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS user_statistics (
   `job_id` VARCHAR(128),
   `user` VARCHAR(128),
   `vcore_seconds` INT,
-  `memory_used` INT,
+  `memory_used` BIGINT UNSIGNED,
   `during_time` INT,
   `status` VARCHAR(32),
   PRIMARY KEY (`timestamp`, `job_id`)
