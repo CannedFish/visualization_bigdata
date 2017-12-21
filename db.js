@@ -120,6 +120,7 @@ const tables = [
   'vir_resource',
   'vir_res_status',
   'service_status',
+  'data_collector_volume',
   'msg_queue_volume',
   'data_statistics',
   'user_statistics'

@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS user_statistics (
   `timestamp` VARCHAR(64) NOT NULL,
   `job_id` VARCHAR(128),
   `user` VARCHAR(128),
-  `vcore_used` INT,
+  `vcore_seconds` INT,
   `memory_used` INT,
   `during_time` INT,
   `status` VARCHAR(32),

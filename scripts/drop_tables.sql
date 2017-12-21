@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS cluster_status;
 DROP TABLE IF EXISTS vir_resource;
 DROP TABLE IF EXISTS vir_res_status;
 DROP TABLE IF EXISTS service_status;
+DROP TABLE IF EXISTS data_collector_volume;
 DROP TABLE IF EXISTS msg_queue_volume;
 DROP TABLE IF EXISTS data_statistics;
 DROP TABLE IF EXISTS user_statistics;
