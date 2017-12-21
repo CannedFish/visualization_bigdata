@@ -74,16 +74,22 @@ function doPost(reqPath, headers, reqData) {
   })
 }
 
-exports.getAllData = (table, callback) => {
-  doGet('/data/'+table, appHeaders).then((ret) => {
-    if(ret.status != 200) {
-      return callback(`Bad return code: ${ret.status}`);
+exports.getAllData = (table, where=null) => {
+  return new Promise((resolve, reject) => {
+    let url = '/data/'+table;
+    if(where != null) {
+      url += `?where=${new Buffer(where).toString('base64')}`
     }
+    doGet(url, appHeaders).then((ret) => {
+      if(ret.status != 200) {
+        return reject(`Bad return code: ${ret.status}`);
+      }
 
-    callback(null, ret.data);
-  }).catch((err) => {
-    callback(err)
-  });
+      return resolve(ret.data);
+    }).catch((err) => {
+      return reject(err);
+    });
+  })
 }
 
 exports.registerApp = (key, callback) => {
