@@ -3,12 +3,15 @@
 const path = require('path');
 const http = require('http');
 
-const config = require(path.join(__dirname, 'config.js'))
+const config = require(path.join(__dirname, 'config.js'));
+const logging = require(path.join(__dirname, './logging.js'));
+
+const LOG = logging.getLogger(__filename);
 
 const appHeaders = {
   'Content-Type': 'application/json',
   'Authorization': config.db_server_app_key
-}
+};
 
 function doGet(reqPath, headers) {
   return new Promise((resolve, reject) => {
@@ -33,9 +36,11 @@ function doGet(reqPath, headers) {
 
     req.on('error', (err) => {
       reject(err);
+      LOG.error(`GET http://${config.db_server_host}:${config.db_server_port}${reqPath} ${err}`);
     })
 
     req.end()
+    LOG.info(`GET http://${config.db_server_host}:${config.db_server_port}${reqPath}`);
   })
 }
 
@@ -63,6 +68,7 @@ function doPost(reqPath, headers, reqData) {
 
     req.on('error', (err) => {
       reject(err);
+      LOG.error(`POST http://${config.db_server_host}:${config.db_server_port}${reqPath} ${err}`);
     })
 
     if(typeof(reqData) !== 'undefined') {
@@ -70,7 +76,7 @@ function doPost(reqPath, headers, reqData) {
       console.log(`data sended: ${JSON.stringify(reqData)}`)
     }
     req.end();
-    console.log(`Sending POST request to http://${config.db_server_host}:${config.db_server_port}${reqPath}`);
+    LOG.info(`POST http://${config.db_server_host}:${config.db_server_port}${reqPath}`);
   })
 }
 

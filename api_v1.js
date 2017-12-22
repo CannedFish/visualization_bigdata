@@ -2,6 +2,13 @@
 
 const express = require('express');
 const router = express.Router();
+const path = require('path')
+
+const host = require(path.join(__dirname, './handlers/host.js'))
+
+const logging = require(path.join(__dirname, './logging.js'));
+
+const LOG = logging.getLogger(__filename);
 
 // Routes
 router.get('/', (req, res) => {
@@ -10,11 +17,19 @@ router.get('/', (req, res) => {
 
 router.get('/hostStatus', (req, res) => {
   console.log('/hostStatus');
-  res.send({
-    good: 23,
-    bad: 23,
-    bad_monthly: 231,
-    bad_until_now: 1283
+  /* @Return:
+   *  {
+   *    good: 23,
+   *    bad: 23,
+   *    bad_monthly: 231,
+   *    bad_until_now: 1283
+   *  }
+   */
+  host.getHostStatus((err, data) => {
+    if(err) {
+      res.status(500).end(err);
+    }
+    res.send(data);
   });
 });
 

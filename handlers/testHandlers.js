@@ -4,5 +4,7 @@ const path = require('path')
 
 const host = require(path.join(__dirname, 'host.js'))
 
-host.getHostStatus()
+host.getHostStatus((err, data) => {
+  console.log(data)
+})
 
