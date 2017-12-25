@@ -35,13 +35,16 @@ router.get('/hostStatus', (req, res) => {
 
 router.get('/:cluster/resource', (req, res) => {
   console.log('/:cluster/resource');
-  res.send({
-    cluster: req.clusterId,
-    nodes: 123,
-    cores: 234,
-    memory: 213093483,
-    disk: 238492801298
-  });
+  /* @Return:
+   * {
+   *   cluster: req.clusterId,
+   *   nodes: 123,
+   *   cores: 234,
+   *   memory: 213093483,
+   *   disk: 238492801298
+   * }
+   */
+  res.send();
 });
 
 router.get('/:cluster/resource/usage', (req, res) => {
