@@ -4,8 +4,14 @@ const path = require('path')
 
 const db = require(path.join(__dirname, '../db.js'))
 
+const Start = Math.round(Date.now()/1000);
+const OneDayMS = 60*60*60;
 const monthLength = 30;
-let last = {timestamp: 0};
+let last = {
+  timestamp: (Start-OneDayMS),
+  host_running: 0,
+  host_down: 0
+};
 let cacheData = [];
 
 function compaction() {
@@ -30,19 +36,21 @@ function untilNow() {
 
 exports.getHostStatus = (callback) => {
   db.getAllData('phy_health', `timestamp>${last.timestamp}`).then((ret) => {
-    ret.data.sort((a, b) => {
-      if(a.timestamp < b.timestamp) {
-        return -1;
-      }
-      if(a.timestamp > b.timestamp) {
-        return 1;
-      }
+    if(ret.data.length != 0) {
+      ret.data.sort((a, b) => {
+        if(a.timestamp < b.timestamp) {
+          return -1;
+        }
+        if(a.timestamp > b.timestamp) {
+          return 1;
+        }
 
-      return 0;
-    });
-    cacheData = cacheData.concat(ret.data);
-    compaction();
-    last = cacheData[cacheData.length-1];
+        return 0;
+      });
+      cacheData = cacheData.concat(ret.data);
+      compaction();
+      last = cacheData[cacheData.length-1];
+    }
 
     callback(null, {
       good: last.host_running,

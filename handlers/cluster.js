@@ -3,16 +3,24 @@
 const path = require('path')
 
 const db = require(path.join(__dirname, '../db.js'))
-const logging = require(path.join(__dirname, './logging.js'));
+const logging = require(path.join(__dirname, '../logging.js'));
 
 const LOG = logging.getLogger(__filename);
 
+const Start = Math.round(Date.now()/1000);
+const OneDayMS = 60*60*60;
+
 class Cluster {
   constructor() {
-    this._last = {timestamp: 0};
+    this._last = {
+      0: {timestamp: Start-OneDayMS},
+      1: {timestamp: Start-OneDayMS},
+      2: {timestamp: Start-OneDayMS}
+    };
+    this._cachedData = [];
   }
 
-  data(table, where) {
+  data(clusterId, table, where, callback) {
     db.getAllData(table, where).then((ret) => {
       ret.data.sort((a, b) => {
         if(a.timestamp < b.timestamp) {
@@ -23,12 +31,13 @@ class Cluster {
         }
         return 0;
       });
-      return this._parse(ret.data);
+      return this._parse({id: clusterId, data: ret.data});
     }).then((ret) => {
-      // resolve
+      callback(null, ret);
     }).catch((err) => {
       LOG.error(err);
-    })
+      callback(err);
+    });
   }
 
   _parse() {
@@ -36,21 +45,36 @@ class Cluster {
   }
 }
 
+// cluster resource
 class Resource extends Cluster {
-  _parse(data) {
+  _parse(ret) {
     return new Promise((resolve, reject) => {
-      // handle sorted data
+      if(ret.data.length > 0) {
+        this._last[ret.clusterId] = ret.data[ret.data.length - 1];
+      }
+      resolve({
+        cluster: this._last[ret.clusterId].cluster,
+        nodes: this._last[ret.clusterId].nodes,
+        cores: this._last[ret.clusterId].cores,
+        memory: this._last[ret.clusterId].memory,
+        disk: this._last[ret.clusterId].disk
+      });
     });
   }
 
-  getClusterResource(clusterId) {
-    this.data('cluster_resource'
-        , `timestamp>${this._last.timestamp} and cluster=${clusterId}`);
+  getClusterResource(clusterId, callback) {
+    this.data(clusterId
+        , 'cluster_resource'
+        , `timestamp>${this._last[clusterId].timestamp} and cluster=${clusterId}`
+        , callback);
   }
 }
-clusterResource = new Resource();
-exports.getClusterResource = clusterResource.getClusterResource;
+const clusterResource = new Resource();
+exports.getClusterResource = (clusterId, callback) => {
+  clusterResource.getClusterResource(clusterId, callback)
+};
 
+// cluster resource usage
 exports.getClusterResourceUsage = (clusterId) => {};
 
 exports.getClusterServiceStatus = (clusterId) => {};

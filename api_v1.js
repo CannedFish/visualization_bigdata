@@ -5,6 +5,7 @@ const router = express.Router();
 const path = require('path')
 
 const host = require(path.join(__dirname, './handlers/host.js'))
+const cluster = require(path.join(__dirname, './handlers/cluster.js'))
 
 const logging = require(path.join(__dirname, './logging.js'));
 
@@ -44,7 +45,12 @@ router.get('/:cluster/resource', (req, res) => {
    *   disk: 238492801298
    * }
    */
-  res.send();
+  cluster.getClusterResource(req.clusterId, (err, data) => {
+    if(err) {
+      res.status(500).end(err);
+    }
+    res.send(data);
+  });
 });
 
 router.get('/:cluster/resource/usage', (req, res) => {
