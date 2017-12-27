@@ -5,10 +5,10 @@ const path = require('path')
 const db = require(path.join(__dirname, '../db.js'))
 
 const Start = Math.round(Date.now()/1000);
-const OneDayMS = 60*60*60;
+const OneDayS = 24*60*60;
 const monthLength = 30;
 let last = {
-  timestamp: (Start-OneDayMS),
+  timestamp: (Start-OneDayS),
   host_running: 0,
   host_down: 0
 };
