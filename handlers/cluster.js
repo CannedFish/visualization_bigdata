@@ -62,7 +62,7 @@ class Cluster {
 class Resource extends Cluster {
   _parse(ret) {
     return new Promise((resolve, reject) => {
-      let clusterId = ret.perms[0];
+      let clusterId = ret.params[0];
       if(ret.data.length > 0) {
         this._last[clusterId] = ret.data[ret.data.length - 1];
       }

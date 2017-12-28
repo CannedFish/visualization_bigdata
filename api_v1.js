@@ -244,7 +244,7 @@ router.get('/users/statistic', (req, res) => {
    *   data: [...Array(2).keys()].map((i) => {
    *     return {
    *       user: 'user_' + i,
-   *       vcores_seconds: 23234,
+   *       vcore_seconds: 23234,
    *       mem_used: 392123,
    *       during_time: 12332423,
    *       jobs: 34
