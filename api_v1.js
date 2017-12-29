@@ -175,7 +175,7 @@ let dataStatusHandler = [
      *   data: [...Array(r).keys()].map((i) => {
      *     return {
      *       timestamp: 1239239320,
-     *       record: 12381
+     *       records: 12381
      *     }
      *   })
      * }
@@ -219,8 +219,8 @@ router.get('/virtualResource/usage', (req, res) => {
    *   data: [...Array(range).keys()].map((i) => {
    *     return {
    *       timestamp: 1238903248,
-   *       vcores_used: 32,
-   *       vmems_used: 320920,
+   *       vcore_used: 32,
+   *       vmem_used: 320920,
    *       hdfs_used: 123809148
    *     }
    *   })
