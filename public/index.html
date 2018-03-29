@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>可视化数据展示</title>
+  <link rel="stylesheet" href="./css/reset.css"/>
+  <link rel="stylesheet" href="./css/index.css"/>
+  <style>
+    [v-cloak]{
+      display:none
+    }
+  </style>
+</head>
+<body>
+
+<div class="ad-container">
+  <!-- 物理机健康状况 -->
+  <div class="ad-health">
+    <div class="ad-health-list ad-health-1">正常运行主机数(个)：{{data1.good}}</div>
+    <div class="ad-health-list ad-health-2">最近一个月故障机次(次)：{{data1.bad_monthly}}</div>
+    <div class="ad-health-list ad-health-3">当前故障主机数(个)：{{data1.bad}}</div>
+    <div class="ad-health-list ad-health-4">到目前为止故障机次(次)：{{data1.bad_until_now}}</div>
+  </div>
+  <div class="ad-body clear">
+    <div class="ad-cont ad-cont1">
+      <div class="ad-body-1 ad-body-11 clear">
+        <div class="ad-body11-list">
+          <h3 v-text="data2[0].nodes"></h3>
+          <p>节点数量(个)</p>
+        </div>
+        <div class="ad-body11-list">
+          <h3 v-text="data2[0].cores"></h3>
+          <p>CPU核数(个)</p>
+        </div>
+        <div class="ad-body11-list">
+          <h3 v-text="bytesToGB(data2[0].memory)"></h3>
+          <p>内存总量(G)</p>
+        </div>
+        <div class="ad-body11-list">
+          <h3 v-text="bytesToGB(data2[0].disk)"></h3>
+          <p>存储总量(G)</p>
+        </div>
+      </div>
+      <div class="ad-body-1 ad-body-12 clear">
+        <div class="ad-body-list-title ad-body-list-title1">物理使用情况</div>
+        <div class="ad-body-12-l" id="myChart1"></div>
+        <div class="ad-body-12-r">
+          <div class="ad-body-12-rc ad-body-12-r1" id="myChart2"></div>
+          <div class="ad-body-12-rc ad-body-12-r2" id="myChart3"></div>
+        </div>
+      </div>
+      <div class="ad-body-1 ad-body-13">
+        <div class="ad-body-list-title ad-body-list-title2">采集集群流量</div>
+        <div class="ad-body-c ad-body-c-13" id="myChart4"></div>
+      </div>
+      <div class="ad-body-1 ad-body-14">
+        <div class="ad-body-list-title ad-body-list-title3">服务组件健康状况</div>
+        <table class="ad-body-14-list">
+          <tr v-for="let (val,i) of data5[0]">
+            <td>{{val.timestamp | dateFormat}}</td>
+            <td nowrap="nowrap">{{val.service_name}} 运行状况：{{val.health==0?'健康':'故障'}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="ad-cont ad-cont2">
+      <div class="ad-cont2-top clear">
+        <div class="ad-cont2-t ad-cont2-tl">
+          <div class="ad-cont2-tl ad-cont2-tl-1">
+            <div class="ad-body-list-title ad-body-list-title4">集群物理可用资源</div>
+            <div class="ad-cont2-tl-1-outer clear">
+              <div class="ad-cont2-tl-1-inner">
+                <h3 v-text="data2[2].nodes"></h3>
+                <p>节点数量(个)</p>
+              </div>
+              <div class="ad-cont2-tl-1-inner">
+                <h3 v-text="data2[2].cores"></h3>
+                <p>CPU核数(个)</p>
+              </div>
+              <div class="ad-cont2-tl-1-inner">
+                <h3 v-text="bytesToGB(data2[2].memory)"></h3>
+                <p>内存总量(G)</p>
+              </div>
+              <div class="ad-cont2-tl-1-inner">
+                <h3 v-text="bytesToGB(data2[2].disk)"></h3>
+                <p>存储总量(G)</p>
+              </div>
+            </div>
+          </div>
+          <div class="ad-cont2-tl ad-cont2-tl-2 clear">
+            <div class="ad-cont2-tl-2-chart ad-cont2-tl-2-chart1">
+              <div class="ad-body-list-title ad-body-list-title2">物理使用情况</div>
+              <div class="ad-cont2-tl-2-c11" id="myChart5"></div>
+            </div>
+            <div class="ad-cont2-tl-2-chart ad-cont2-tl-2-chart2">
+              <div class="ad-cont2-tl-2-c2 ad-cont2-tl-2-c21" id="myChart6"></div>
+              <div class="ad-cont2-tl-2-c2 ad-cont2-tl-2-c22" id="myChart7"></div>
+            </div>
+          </div>
+        </div>
+        <div class="ad-cont2-t ad-cont2-tr">
+          <div class="ad-cont2-tr-outer ad-cont2-tr1">
+            <div class="ad-body-list-title ad-body-list-title2">数据总量</div>
+            <div class="ad-cont2-tr1-outer clear">
+              <div class="ad-cont2-tr1-inner ad-cont2-tr1-inner1">
+                <h3 v-text="data1.good"></h3>
+                <p>云服务器数量(台)</p>
+              </div>
+              <div class="ad-cont2-tr1-inner ad-cont2-tr1-inner2">
+                <h3 v-text="bytesToGB(data7.vmems)"></h3>
+                <p>虚拟内存总数(G)</p>
+              </div>
+              <div class="ad-cont2-tr1-inner ad-cont2-tr1-inner3">
+                <h3 v-text="data7.vcores"></h3>
+                <p>CPU总数(个)</p>
+              </div>
+              <div class="ad-cont2-tr1-inner ad-cont2-tr1-inner4">
+                <h3 v-text="bytesToGB(data7.hdfs_capacity)"></h3>
+                <p>虚拟硬盘总数(G)</p>
+              </div>
+            </div>
+          </div>
+          <div class="ad-cont2-tr-outer ad-cont2-tr2">
+            <div class="ad-cont2-tr2-list">
+              <h4>Core分配量</h4>
+              <div class="ad-cont2-tr2-list-outer">
+                <div class="ad-cont2-tr2-list-inner" :style="{width:lastData8.vcores+'%'}">{{lastData8.vcores+'%'}}</div>
+              </div>
+            </div>
+            <div class="ad-cont2-tr2-list">
+              <h4>Mem分配量</h4>
+              <div class="ad-cont2-tr2-list-outer">
+                <div class="ad-cont2-tr2-list-inner" :style="{width:lastData8.vmems+'%'}">{{lastData8.vmems+'%'}}</div>
+              </div>
+            </div>
+            <div class="ad-cont2-tr2-list">
+              <h4>HDFS分配量</h4>
+              <div class="ad-cont2-tr2-list-outer">
+                <div class="ad-cont2-tr2-list-inner" :style="{width:lastData8.hdfs_capacity+'%'}">{{lastData8.hdfs_capacity+'%'}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ad-cont2-bottom clear">
+        <div class="ad-cont2-b ad-cont2-bl">
+          <div class="ad-cont2-bl1 ad-cont2-bl1-1">
+            <div class="ad-body-list-title ad-body-list-title5">数据底盘每日数据增量</div>
+            <div class="ad-cont2-bl1-chart" id="myChart8"></div>
+          </div>
+          <div class="ad-cont2-bl1 ad-cont2-bl1-2">
+            <div class="ad-body-list-title ad-body-list-title3">服务组件健康状况</div>
+            <table class="ad-body-14-list ad-cont2-bl1-list">
+              <tr v-for="let (val,i) of data5[2]" v-if="i<=4">
+                <td>{{val.timestamp | dateFormat}}</td>
+                <td nowrap="nowrap">{{val.service_name}} 运行状况：{{val.health==0?'健康':'故障'}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="ad-cont2-b ad-cont2-br">
+          <div class="ad-cont2-br-outer">
+            <div class="ad-body-list-title ad-body-list-title7">计算资源使用排行</div>
+            <table class="ad-cont2-br-table">
+              <thead>
+              <tr>
+                <th>排名</th>
+                <th>应用系统名称</th>
+                <th>CPU时间(秒)</th>
+                <th>内存(B)</th>
+                <th>任务数(个)</th>
+                <th>持续坚持时间(秒)</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="let (val,i) of data9[0]" v-if="i<12">
+                <td v-text="i+1"></td>
+                <td v-text="val['user']"></td>
+                <td v-text="val['vcore_seconds']"></td>
+                <td v-text="val['mem_used']"></td>
+                <td v-text="val['jobs']"></td>
+                <td v-text="val['during_time']"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ad-cont ad-cont3">
+      <div class="ad-body-1 ad-body-11 clear">
+        <div class="ad-body11-list">
+          <h3 v-text="data2[1].nodes"></h3>
+          <p>节点数量(个)</p>
+        </div>
+        <div class="ad-body11-list">
+          <h3 v-text="data2[1].cores"></h3>
+          <p>CPU核数(个)</p>
+        </div>
+        <div class="ad-body11-list">
+          <h3 v-text="bytesToGB(data2[1].memory)"></h3>
+          <p>内存总量(G)</p>
+        </div>
+        <div class="ad-body11-list">
+          <h3 v-text="bytesToGB(data2[1].disk)"></h3>
+          <p>存储总量(G)</p>
+        </div>
+      </div>
+      <div class="ad-body-1 ad-body-12 clear">
+        <div class="ad-body-list-title ad-body-list-title1">物理使用情况</div>
+        <div class="ad-body-12-l" id="myChart9"></div>
+        <div class="ad-body-12-r">
+          <div class="ad-body-12-rc ad-body-12-r1" id="myChart10"></div>
+          <div class="ad-body-12-rc ad-body-12-r2" id="myChart11"></div>
+        </div>
+      </div>
+      <div class="ad-body-1 ad-body-13">
+        <div class="ad-body-list-title ad-body-list-title2">消息队列集群流量</div>
+        <div class="ad-body-c ad-body-c-13" id="myChart12"></div>
+      </div>
+      <div class="ad-body-1 ad-body-14">
+        <div class="ad-body-list-title ad-body-list-title3">服务组件健康状况</div>
+        <table class="ad-body-14-list">
+          <tr v-for="let (val,i) of data5[1]" v-if="i<=6">
+            <td>{{val.timestamp | dateFormat}}</td>
+            <td nowrap="nowrap">{{val.service_name}} 运行状况：{{val.health==0?'健康':'故障'}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="./js/vue.js"></script>
+<script src="./js/vue-resource.min.js"></script>
+<script src="./js/echarts/build/dist/echarts-all.js"></script>
+<script src="./js/index.js"></script>
+</body>
+</html>

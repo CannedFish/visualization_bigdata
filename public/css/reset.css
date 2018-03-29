@@ -1,0 +1,112 @@
+/* CSS RESET */
+/* TimesNewRoman */
+/*@font-face{
+    font-family:"TimesNewRoman";
+    /!*为引入的字体命名*!/
+    src:url("TimesNewRoman.ttf");
+    /!*定义要引入字体文件的路径*!/
+    font-style: normal;
+}*/
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+html,
+body,
+#app{
+    width: 100%;
+}
+body {
+    width: 100%;
+    font-family: "Arial","Microsoft YaHei",sans-serif;
+    font-size: 14px;
+    color: #333;
+    max-width: 1920px;
+    /*min-width: 1200px;*/
+    margin: 0 auto;
+}
+
+img {
+    border: 0;
+}
+
+ol,ul,li {
+    list-style: none;
+}
+
+i {
+    font-style: normal;
+}
+
+h1,h2,h2,h3,h4,h5,h6 {
+    font-weight: 400;
+    font-size: 14px;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+}
+
+label {
+    cursor: pointer;
+}
+
+button,
+input[type="button"]{
+    border: none;
+    background: #fff;
+}
+
+button:hover {
+    cursor: pointer;
+    text-align: center;
+}
+
+input[type="button"]:hover {
+    cursor: pointer;
+}
+
+input {
+    border: none;
+}
+input:disabled{
+    background-color: #fff;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+th,td {
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+}
+
+.clear:before,
+.clear:after {
+    content: '';
+    display: block;
+    clear: both;
+    height: 0;
+}
+
+.img-res {
+    display: block;
+    width: 100%;
+}
+
+.center {
+    text-align: center;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
+/* common */
