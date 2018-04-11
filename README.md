@@ -7,9 +7,22 @@ Nodejs v8.9.1 LTS
 ## Setup
 
 ```shell
+# Get source code
+git clone https://github.com/CannedFish/visualization_bigdata.git
 cd visualization_bigdata
+git submodule init
+git submodule update
+
+# Setup ETL backend program
+# Check data_etl/README.md
+
+# Setup Web APP for big screen
 npm install
 ```
+
+## Configuration
+
+Edit ./config.js
 
 ## Initialize
 
@@ -30,6 +43,6 @@ npm start
 
 ## Main page URL
 ```javascript
-http://${host}:${port}/pages/data_dashboard.html
+http://${host}:${port}/index.html
 ```
 

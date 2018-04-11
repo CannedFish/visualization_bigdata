@@ -1,5 +1,6 @@
 node_modules/*
 *.log
 *.swp
+*.un~
 
 package-lock.json
